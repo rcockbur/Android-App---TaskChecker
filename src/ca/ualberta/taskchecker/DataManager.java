@@ -16,6 +16,7 @@ import org.json.JSONTokener;
 
 import android.content.Context;
 
+//Class used by TaskHolder to save and load an ArrayList to internal storage
 public class DataManager {
 
 	private Context context;
@@ -25,6 +26,8 @@ public class DataManager {
 		context = c;
 		fileName = f;
 	}
+	
+	//Converts the ArrayList to JSONArray and saves to storage
 	public void saveTasks(ArrayList<Task> tasks) throws JSONException, IOException {
 		JSONArray array = new JSONArray();
 		for (Task t : tasks) {
@@ -41,6 +44,7 @@ public class DataManager {
 		}
 	}
 	
+	//Loads JSONArray from storage and converts to ArrayList
 	public ArrayList<Task> loadTasks() throws IOException, JSONException {
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		BufferedReader reader = null;

@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//Main data model for application
 public class Task {
 	
 	private static final String JSON_ID = "id";
@@ -16,6 +17,22 @@ public class Task {
 	private boolean complete;
 	private boolean archived;
 	
+	//Constructor for new Task
+	public Task(){
+		id = UUID.randomUUID();
+	}
+	
+	//Constructor when loading from storage
+	public Task(JSONObject json) throws JSONException {
+		id = UUID.fromString(json.getString(JSON_ID));
+		if (json.has(JSON_TITLE)) {
+			title = json.getString(JSON_TITLE);
+		}
+		complete = json.getBoolean(JSON_COMPLETE);
+		archived = json.getBoolean(JSON_ARCHIVED);
+	}
+	
+	//getters and setters
 	public boolean isArchived() {
 		return archived;
 	}
@@ -32,29 +49,6 @@ public class Task {
 		this.complete = complete;
 	}
 
-	public Task(){
-		id = UUID.randomUUID();
-	}
-	
-	public Task(JSONObject json) throws JSONException {
-		id = UUID.fromString(json.getString(JSON_ID));
-		if (json.has(JSON_TITLE)) {
-			title = json.getString(JSON_TITLE);
-		}
-		complete = json.getBoolean(JSON_COMPLETE);
-		archived = json.getBoolean(JSON_ARCHIVED);
-	}
-
-
-	public JSONObject toJSON() throws JSONException {
-		JSONObject json = new JSONObject();
-		json.put(JSON_ID, id.toString());
-		json.put(JSON_TITLE, title);
-		json.put(JSON_COMPLETE, complete);
-		json.put(JSON_ARCHIVED,  archived);
-		return json;
-		}
-	
 	public UUID getId() {
 		return id;
 	}
@@ -71,4 +65,15 @@ public class Task {
 	public String toString() {
 		return title;
 	}
+	
+	//Creates JSON object and saves Task attributes to it
+	public JSONObject toJSON() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put(JSON_ID, id.toString());
+		json.put(JSON_TITLE, title);
+		json.put(JSON_COMPLETE, complete);
+		json.put(JSON_ARCHIVED,  archived);
+		return json;
+		}
+	
 }

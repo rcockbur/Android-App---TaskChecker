@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 
+//Abstract Activity for hosting a single fragment on screen
 public abstract class SingleFragmentActivity extends Activity {
 	
 	protected abstract Fragment createFragment();
