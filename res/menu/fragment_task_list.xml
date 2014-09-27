@@ -4,6 +4,10 @@
 		android:icon="@android:drawable/ic_menu_add"
 		android:title="@string/new_task"
 		android:showAsAction="ifRoom|withText"/>
+	<item android:id="@+id/menu_item_stats"
+		android:icon="@android:drawable/ic_menu_zoom"
+		android:title="@string/usage_stats"
+		android:showAsAction="ifRoom|withText"/>
 	<item android:id="@+id/menu_item_toggle_archive"
 		android:icon="@android:drawable/ic_lock_lock"
 		android:title="@string/toggle_archive"

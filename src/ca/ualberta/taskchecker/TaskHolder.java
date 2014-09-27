@@ -8,9 +8,9 @@ import android.content.Context;
 //Container object for holding and managing Tasks
 public class TaskHolder {
 	
-	private static final String FILENAME = "tasks.json";
+	private static final String FILENAME = "tasks.json"; //file for tasks
 	private static TaskHolder taskHolder;
-	private ArrayList<Task> tasks; 
+	private ArrayList<Task> tasks; //tasks collection
 	private DataManager manager;
 	private Context context;
 	
@@ -19,7 +19,7 @@ public class TaskHolder {
 		context = appContext;
 		manager = new DataManager(context, FILENAME);
 		try {
-			tasks = manager.loadTasks();
+			tasks = manager.loadTasks(false);
 		} catch (Exception e) {
 			tasks = new ArrayList<Task>();
 		}
@@ -44,6 +44,54 @@ public class TaskHolder {
 	public void deleteTask(Task t) {
 		tasks.remove(t);
 	}
+
+	
+	public String numToDoChecked() {
+		int count = 0;
+		for (Task t : tasks) {
+			if (t.isArchived() == false) {
+				if (t.isComplete() == true) {
+					count = count + 1;
+				}
+			}
+		}
+		return Integer.toString(count);
+	}
+	
+	public String numArchivedChecked() {
+		int count = 0;
+		for (Task t : tasks) {
+			if (t.isArchived() == true) {
+				if (t.isComplete() == true) {
+					count = count + 1;
+				}
+			}
+		}
+		return Integer.toString(count);
+	}
+	public String numToDoUnchecked() {
+		int count = 0;
+		for (Task t : tasks) {
+			if (t.isArchived() == false) {
+				if (t.isComplete() == false) {
+					count = count + 1;
+				}
+			}
+		}
+		return Integer.toString(count);
+	}
+	
+	public String numArchivedUnchecked() {
+		int count = 0;
+		for (Task t : tasks) {
+			if (t.isArchived() == true) {
+				if (t.isComplete() == false) {
+					count = count + 1;
+				}
+			}
+		}
+		return Integer.toString(count);
+	}
 	
 	//Only calls constructor the first time because class is Singleton
 	public static TaskHolder get(Context c) {
@@ -55,15 +103,10 @@ public class TaskHolder {
 	
 	public boolean saveTasks() {
 		try {
-			manager.saveTasks(tasks);
+			manager.saveTasks(tasks, false);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
-	}
-
-	
-	
-
-	
+	}	
 }

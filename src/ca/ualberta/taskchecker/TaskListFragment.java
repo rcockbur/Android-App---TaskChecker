@@ -17,12 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //Fragment for displaying list of Tasks with CheckBox's indicating 
 //state of 'complete' attribute. Task items respond to short and long clicks
 public class TaskListFragment extends ListFragment {
 	
 	private ArrayList<Task> tasks;
+	private ArrayList<Task> tasksA;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class TaskListFragment extends ListFragment {
 		getActivity().setTitle(R.string.tasks_title);
 		tasks = TaskHolder.get(getActivity()).getTasks();
 		TaskAdapter adapter = new TaskAdapter(tasks);
+		TaskAdapter adapterA = new TaskAdapter(tasksA); 
 		setListAdapter(adapter);
 	}
 	
@@ -98,24 +101,22 @@ public class TaskListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_item_new_task:
-				Task crime = new Task();
-				TaskHolder.get(getActivity()).addTask(crime);
+				Task task = new Task();
+				TaskHolder.get(getActivity()).addTask(task);
 				Intent i = new Intent(getActivity(), TaskActivity.class);
-				i.putExtra(TaskFragment.EXTRA_TASK_ID, crime.getId());
+				i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 				startActivityForResult(i, 0);
 				return true;
+			case R.id.menu_item_stats:
+				String l1 = "ToDo items checked=" + TaskHolder.get(getActivity()).numToDoChecked() +"\n";
+				String l2 = "ToDo items unchecked=" + TaskHolder.get(getActivity()).numToDoUnchecked() +"\n";
+				String l3 = "Archive items checked=" + TaskHolder.get(getActivity()).numArchivedChecked() +"\n";
+				String l4 = "Archive items unchecked=" + TaskHolder.get(getActivity()).numArchivedUnchecked();
+				Toast.makeText(getActivity(), l1+l2+l3+l4, Toast.LENGTH_LONG).show();
+			
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	//Creates TaskListActivity with an EXTRA containing selected item's Id
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Task t = ((TaskAdapter)getListAdapter()).getItem(position);
-		Intent i = new Intent(getActivity(), TaskActivity.class);
-		i.putExtra(TaskFragment.EXTRA_TASK_ID, t.getId());
-		startActivity(i);
 	}
 	
 	//Custom adapter for linking Task objects to listView
@@ -132,10 +133,21 @@ public class TaskListFragment extends ListFragment {
 			if (convertView == null) {
 				convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_task, null);
 			}
-			Task t = getItem(position);
+			final Task t = getItem(position);
 			
 			TextView titleTextView = (TextView)convertView.findViewById(R.id.task_list_item_titleTextView);
 			titleTextView.setText(t.getTitle());
+			titleTextView.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(getActivity(), TaskActivity.class);
+					i.putExtra(TaskFragment.EXTRA_TASK_ID, t.getId());
+					startActivity(i);
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			
 			CheckBox completeCheckBox = (CheckBox)convertView.findViewById(R.id.task_list_item_completeCheckBox);
 			completeCheckBox.setChecked(t.isComplete());

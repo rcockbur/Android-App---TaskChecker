@@ -28,12 +28,13 @@ public class DataManager {
 	}
 	
 	//Converts the ArrayList to JSONArray and saves to storage
-	public void saveTasks(ArrayList<Task> tasks) throws JSONException, IOException {
+	public void saveTasks(ArrayList<Task> tasks, boolean archived) throws JSONException, IOException {
 		JSONArray array = new JSONArray();
 		for (Task t : tasks) {
 			array.put(t.toJSON());
 		}
 		Writer writer = null;
+		
 		try {
 			OutputStream out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
 			writer = new OutputStreamWriter(out);
@@ -45,10 +46,11 @@ public class DataManager {
 	}
 	
 	//Loads JSONArray from storage and converts to ArrayList
-	public ArrayList<Task> loadTasks() throws IOException, JSONException {
+	public ArrayList<Task> loadTasks(boolean archived) throws IOException, JSONException {
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		BufferedReader reader = null;
 		try {
+			
 			InputStream in = context.openFileInput(fileName);
 			reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder jsonString = new StringBuilder();

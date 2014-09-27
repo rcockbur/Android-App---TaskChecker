@@ -9,6 +9,7 @@
 	<string name="task_complete_label">Complete</string>
 	<string name="task_archived_label">Archived</string>
     <string name="tasks_title">Tasks</string>
+    <string name="usage_stats">Usage Statistics</string>
     <string name="new_task">New Task</string>
     <string name="toggle_archive">Toggle View</string>
 	<string name="show_subtitle">Show Subtitle</string>

@@ -3,6 +3,7 @@ package ca.ualberta.taskchecker;
 import java.util.UUID;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -11,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 //Fragment for displaying a single Task and some options for editing it
 public class TaskFragment extends Fragment {
@@ -26,6 +29,7 @@ public class TaskFragment extends Fragment {
 	private EditText titleField;
 	private CheckBox completeCheckBox;
 	private CheckBox archivedCheckBox;
+	private Button emailButton;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,8 +92,45 @@ public class TaskFragment extends Fragment {
 		archivedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				task.setArchived(isChecked);
+				//TaskHolder.get(getActivity()).toggleArchived(task.getId());
 			}
 		});
+		emailButton = (Button)v.findViewById(R.id.emailButton);
+		emailButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+
+				//code for email obtained from StackOverflow user fiXedd
+				//URL=http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
+				
+				//Construct message body
+				String completeMessage = "is not complete";
+				String archivedMessage = "is not archived";
+				if (task.isComplete() == true) {
+					completeMessage = "is complete";
+				}
+				if (task.isArchived() == true) {
+					archivedMessage = "is archived";
+				}
+				String emailBody = "Your task is to " + task.getTitle() + ". Task" + completeMessage
+						+ "and" + archivedMessage;
+				
+				//Create intent for starting email client. Pass along task info in EXTRA
+				Intent i = new Intent(Intent.ACTION_SEND);
+				i.setType("message/rfc822");
+				i.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
+				i.putExtra(Intent.EXTRA_SUBJECT, "");
+				i.putExtra(Intent.EXTRA_TEXT, emailBody);
+				try {
+				    startActivity(Intent.createChooser(i, "Send mail..."));
+				} catch (android.content.ActivityNotFoundException ex) {
+					Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+		});
+		
+		
+		
 		return v;
 	}
 	

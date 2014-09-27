@@ -19,5 +19,5 @@ i grabbed the code for emailing from here
 
 
 Note to grader: 
-The archive attribute for Tasks is not fully implemented. I tried several ways of alternating the view between archived and unarchived. Since I didnt get it working I decided to show both instead of just one. The lock icon at the top-right of the list screen was supposed to swap the list adapter with a different adapter that referenced at archivedList.
+The archive attribute for Tasks is not fully implemented. This is because I ran out of time. There is also no mail feature.
 ===========

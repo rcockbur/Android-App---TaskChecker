@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:focusable="false"
-        android:enabled="false"
         android:padding="4dp" />
 
     <TextView
         android:id="@+id/task_list_item_titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/task_list_item_completeCheckBox"
         android:paddingLeft="4dp"
